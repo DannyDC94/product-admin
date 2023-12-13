@@ -4,7 +4,7 @@
   <div class="d-flex-center">
     <form [formGroup]="form" class="auth-form" (ngSubmit)="submit()">
       <app-logo></app-logo>
-      <app-custom-input 
+      <app-custom-input
         icon="mail-outline"
         autocomplete="email"
         [control]="form.controls.email"
@@ -14,8 +14,8 @@
       <div class="validators" *ngIf="form.controls.email.errors && form.controls.email.touched">
         <div *ngIf="form.controls.email.errors?.['required']">El correo es requerido</div>
         <div *ngIf="form.controls.email.errors?.['email']">Ingrese un correo valido</div>
-      </div>  
-      <app-custom-input 
+      </div>
+      <app-custom-input
         icon="lock-closed-outline"
         autocomplete="password"
         [control]="form.controls.password"
@@ -29,12 +29,12 @@
           Ingresar
           <ion-icon slot="end" name="log-in-outline"></ion-icon>
         </ion-button>
-        <ion-button style="margin-top: 1rem;" routerLink="sign-up" expand="block"  mode="ios" fill="outline">
+        <ion-button *ngIf="false" style="margin-top: 1rem;" routerLink="sign-up" expand="block"  mode="ios" fill="outline">
           Registrate
           <ion-icon slot="end" name="person-add-outline"></ion-icon>
         </ion-button>
         <div class="link-forgot">
-          <a routerLink="forgot-password">Olvidaste tu contraseña</a>  
+          <a routerLink="forgot-password">Olvidaste tu contraseña</a>
         </div>
     </form>
   </div>
