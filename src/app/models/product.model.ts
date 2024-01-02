@@ -1,7 +1,6 @@
 export interface Product {
     price: number,
-    name: string,
-    image: string,
-    soldUnits: number,
+    description: string,
+    category: string,
     id: string
 }

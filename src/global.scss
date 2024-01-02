@@ -36,7 +36,9 @@ ion-button {
 }
 
 .submit {
-  margin-top: 40px;
+  --background: var(--ion-color-primary);
+  border: 2px solid white;
+  border-radius: 10px;
 }
 
 .empty {

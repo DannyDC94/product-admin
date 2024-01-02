@@ -13,8 +13,8 @@ import { orderBy, where } from 'firebase/firestore'
 })
 export class HomePage implements OnInit {
 
-  firebaseSvc = inject(FirebaseService) 
-  utilSvc = inject(UtilsService) 
+  firebaseSvc = inject(FirebaseService)
+  utilSvc = inject(UtilsService)
 
   products: Product[] = [];
   loading: boolean = false;
@@ -38,7 +38,7 @@ export class HomePage implements OnInit {
   }
 
   getProfits() {
-    return this.products.reduce((index, product) => index + product.price * product.soldUnits, 0);
+    return this.products.reduce((index, product) => index + product.price, 0);
   }
 
   // Obtener productos
@@ -98,15 +98,15 @@ export class HomePage implements OnInit {
     const loading = await this.utilSvc.loading();
     await loading.present();
 
-    const imagePath = await this.firebaseSvc.getFilePath(product.image);
-    await this.firebaseSvc.deleteFile(imagePath);
+    // const imagePath = await this.firebaseSvc.getFilePath(product.image);
+    // await this.firebaseSvc.deleteFile(imagePath);
 
     this.firebaseSvc
       .deleteDocument(path)
       .then(async (res) => {
 
         this.products = this.products.filter(p => p.id !== product.id);
-      
+
         this.utilSvc.presentToast({
           message: 'Producto eliminado exitosamente',
           duration: 2000,

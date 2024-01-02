@@ -15,10 +15,9 @@ export class AddUpdateProductComponent implements OnInit {
 
   form = new FormGroup({
     id: new FormControl(''),
-    image: new FormControl('', [Validators.required]),
-    name: new FormControl('', [Validators.required, Validators.minLength(4)]),
-    price: new FormControl(null, [Validators.required, Validators.min(0)]),
-    soldUnits: new FormControl(null, [Validators.required, Validators.min(0)]),
+    category: new FormControl('', [Validators.required]),
+    description: new FormControl('', [Validators.required, Validators.minLength(4)]),
+    price: new FormControl(null, [Validators.required, Validators.min(0)])
   });
 
   firebaseSvc = inject(FirebaseService);
@@ -31,12 +30,6 @@ export class AddUpdateProductComponent implements OnInit {
     if (this.product) this.form.setValue(this.product);
   }
 
-  async takeImage() {
-    const dataUrl = (await this.utilsSvc.takePicture('Imagen del Producto'))
-      .dataUrl;
-    this.form.controls.image.setValue(dataUrl);
-  }
-
   submit() {
     if (this.form.valid) {
       if (this.product) this.updateProduct();
@@ -45,8 +38,7 @@ export class AddUpdateProductComponent implements OnInit {
   }
 
   setNumberInputs() {
-    let { soldUnits, price } = this.form.controls;
-    if(soldUnits) soldUnits.setValue(parseFloat(soldUnits.value));
+    let { price } = this.form.controls;
     if(price) price.setValue(parseFloat(price.value));
   }
 
@@ -56,11 +48,6 @@ export class AddUpdateProductComponent implements OnInit {
     const loading = await this.utilsSvc.loading();
     await loading.present();
 
-    // Subir la imagen y obtener la url
-    const dataUrl = this.form.value.image;
-    const imagePath = `${this.user.uid}/${Date.now()}`;
-    const imageUrl = await this.firebaseSvc.uploadImage(imagePath, dataUrl);
-    this.form.controls.image.setValue(imageUrl);
     delete this.form.value.id;
 
     this.firebaseSvc
@@ -95,14 +82,6 @@ export class AddUpdateProductComponent implements OnInit {
 
     const loading = await this.utilsSvc.loading();
     await loading.present();
-
-    // Si cambio la imagen, subir la nueva y obtener la url
-    if (this.form.value.image !== this.product.image) {
-      const dataUrl = this.form.value.image;
-      const imagePath = await this.firebaseSvc.getFilePath(this.product.image);
-      const imageUrl = await this.firebaseSvc.uploadImage(imagePath, dataUrl);
-      this.form.controls.image.setValue(imageUrl);
-    }
 
     delete this.form.value.id;
 
